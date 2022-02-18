@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/primaryColor"
+    tools:context=".Activity.ForgetActivity">
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:alpha="0.5"
+        android:src="@drawable/register_background5"
+        android:scaleType="centerCrop"/>
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_backarrow"
+        app:tint="@color/white"
+        android:layout_marginTop="?actionBarSize"
+        android:id="@+id/buttonBack" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:orientation="vertical">
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/white"
+            android:hint="Email"
+            android:drawableStart="@drawable/ic_email"
+            android:drawableTint="@color/white"
+            android:textColor="@color/white"
+            android:drawablePadding="10dp"
+            android:maxLines="1"
+            android:layout_marginHorizontal="25dp"
+            android:textStyle="bold"
+            android:textColorHint="@color/white"
+            android:inputType="textEmailAddress"/>
+
+        <com.google.android.material.button.MaterialButton
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="28dp"
+            android:padding="15dp"
+            android:layout_marginTop="11dp"
+            android:textStyle="bold"
+            app:cornerRadius="25dp"
+            android:elevation="10dp"
+            android:text="Send"
+            android:id="@+id/buttonForgetPassword"/>
+    </LinearLayout>
+
+
+
+
+</RelativeLayout>
