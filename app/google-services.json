@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "107554305134",
+    "project_id": "proxview-app",
+    "storage_bucket": "proxview-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:107554305134:android:b3dd02027806ec5f7f627f",
+        "android_client_info": {
+          "package_name": "uk.ac.tees.b1110843.proxviewapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "107554305134-g3d9lh4f6lqqpk6t7olkma8t4i605gls.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "uk.ac.tees.b1110843.proxviewapp",
+            "certificate_hash": "eec0066d777465a8ce017319c6a92509a90ef04f"
+          }
+        },
+        {
+          "client_id": "107554305134-m7rjttuejm8s9mmpusmpclvg0fba7lr2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDTDNX_NCvrt3xe1SCvKF5o9yvkNT1yFIQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "107554305134-m7rjttuejm8s9mmpusmpclvg0fba7lr2.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
