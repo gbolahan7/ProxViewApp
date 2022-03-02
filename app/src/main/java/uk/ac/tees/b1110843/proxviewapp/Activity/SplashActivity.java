@@ -8,7 +8,6 @@ import android.os.Handler;
 
 import com.google.firebase.auth.FirebaseAuth;
 
-import uk.ac.tees.b1110843.proxviewapp.MainActivity;
 import uk.ac.tees.b1110843.proxviewapp.R;
 
 public class SplashActivity extends AppCompatActivity {

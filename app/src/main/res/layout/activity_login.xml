@@ -43,6 +43,7 @@
             android:gravity="center"
             android:layout_weight="1.4">
 
+
             <EditText
                 android:id="@+id/editEmail"
                 android:layout_width="match_parent"
