@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph_drawer"
+    app:startDestination="@id/buttonHome">
+
+    <fragment
+        android:id="@+id/buttonHome"
+        android:name="uk.ac.tees.b1110843.proxviewapp.Fragments.HomeFragment"
+        android:label="Home"
+        tools:layout="@layout/fragment_home" />
+    <fragment
+        android:id="@+id/buttonSetting"
+        android:name="uk.ac.tees.b1110843.proxviewapp.Fragments.SettingsFragment"
+        android:label="fragment_settings"
+        tools:layout="@layout/fragment_settings" />
+    <fragment
+        android:id="@+id/buttonLocation"
+        android:name="uk.ac.tees.b1110843.proxviewapp.Fragments.SavedLocationsFragment"
+        android:label="fragment_saved_locations"
+        tools:layout="@layout/fragment_saved_locations" />
+</navigation>

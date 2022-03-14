@@ -16,10 +16,10 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-
-import uk.ac.tees.b1110843.proxviewapp.Constant.AllConstant;
-import uk.ac.tees.b1110843.proxviewapp.Permissions.AppPermissions;
-import uk.ac.tees.b1110843.proxviewapp.Utilities.SpinnerDialog;
+//
+//import uk.ac.tees.b1110843.proxviewapp.Constant.AllConstant;
+//import uk.ac.tees.b1110843.proxviewapp.Permissions.AppPermissions;
+//import uk.ac.tees.b1110843.proxviewapp.Utilities.SpinnerDialog;
 import uk.ac.tees.b1110843.proxviewapp.databinding.ActivityRegisterBinding;
 
 public class RegisterActivity extends AppCompatActivity {

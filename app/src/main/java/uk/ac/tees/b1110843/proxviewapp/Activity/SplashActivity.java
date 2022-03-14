@@ -26,11 +26,10 @@ public class SplashActivity extends AppCompatActivity {
             public void run() {
                 if (firebaseAuth.getCurrentUser()!=null){
                     startActivity(new Intent(SplashActivity.this, MainActivity.class));
-                    finish();
                 }else{
-                    startActivity(new Intent(SplashActivity.this, LoginActivity.class));
-                    finish();
+                    startActivity(new Intent(SplashActivity.this, ForgetActivity.class));
                 }
+                finish();
             }
         }, 2500);
     }

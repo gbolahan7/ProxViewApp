@@ -60,7 +60,7 @@ public class LoginActivity extends AppCompatActivity {
 
         //initialize firebase auth
         firebaseAuth = FirebaseAuth.getInstance();
-        checkUser();
+//        checkUser();
 
         //if no accunt go to signup
         binding.buttonRegister.setOnClickListener(new View.OnClickListener(){
@@ -85,7 +85,7 @@ public class LoginActivity extends AppCompatActivity {
         //get current user
         FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
         if(firebaseUser !=null){
-            startActivity(new Intent(this, ProfileActivity.class));
+            startActivity(new Intent(this, MainActivity.class));
             finish();
         }
     }
@@ -95,7 +95,7 @@ public class LoginActivity extends AppCompatActivity {
         email = binding.editEmail.getText().toString().trim();
         password = binding.editPassword.getText().toString().trim();
 
-        //validate ddata
+        //validate data
 //        if (Patterns.EMAIL_ADDRESS.matcher(email).matches()){
         if (TextUtils.isEmpty(email)){
             //if email format is invalid, don't proceed
@@ -120,11 +120,11 @@ public class LoginActivity extends AppCompatActivity {
                         //login success
                         //get user infor
                         FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
-                        String email = firebaseUser.getEmail();
-                        Toast.makeText(LoginActivity.this, "LoggedIn\n"+email, Toast.LENGTH_SHORT).show();
+//                        String email = firebaseUser.getEmail();
+//                        Toast.makeText(LoginActivity.this, "LoggedIn\n"+email, Toast.LENGTH_SHORT).show();
 
                         //open profile activity
-                        startActivity(new Intent(LoginActivity.this, ProfileActivity.class ));
+                        startActivity(new Intent(LoginActivity.this, MainActivity.class ));
                         finish();
                     }
                 })
