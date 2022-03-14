@@ -44,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
         uk.ac.tees.b1110843.proxviewapp.databinding.ActivityMainBinding activityMainBinding = navDrawerLayoutBinding.mainActivity;
         toolbarLayoutBinding= activityMainBinding.toolbar;
 
-        setSupportActionBar(toolbarLayoutBinding.toolbar);
+//        setSupportActionBar(toolbarLayoutBinding.toolbar);
 
         firebaseAuth = FirebaseAuth.getInstance();
 
@@ -59,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
         navDrawerLayoutBinding.NavDrawer.addDrawerListener(toggle);
         toggle.syncState();
 
-        //connect the drawer layout with navgraph
+        //connect the drawer layout with nav graph
         NavController navController= Navigation.findNavController(this,R.id.fragmentContainer);
         NavigationUI.setupWithNavController(
                 navDrawerLayoutBinding.NavView,
