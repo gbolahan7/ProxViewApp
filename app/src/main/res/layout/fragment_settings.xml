@@ -50,14 +50,14 @@
                 </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
                 <TextView
-                    android:id="@+id/txtUsername"
+                    android:id="@+id/usernameText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_marginTop="10dp"
                     android:drawablePadding="10dp"
                     app:drawableEndCompat="@drawable/ic_edit"
-                    android:text="Abass Durodola"
+                    android:text="@string/abass_durodola"
                     android:textColor="@color/white"
                     android:textSize="20dp"
                     android:textStyle="bold"
@@ -104,7 +104,7 @@
                             android:textColor="@color/itemTextColor"
                             android:textSize="20dp"
                             android:textStyle="bold"
-                            app:drawableStartCompat="@drawable/ic_emailNew"
+                            app:drawableStartCompat="@drawable/ic_emailnew"
                             app:drawableTint="@color/primaryColor" />
 
                         <LinearLayout
