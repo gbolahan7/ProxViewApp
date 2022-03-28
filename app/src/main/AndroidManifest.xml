@@ -19,6 +19,7 @@
 <!--        <activity-->
 <!--            android:name=".Activity.ProfileActivity"-->
 <!--            android:exported="false" />-->
+
         <activity
             android:name=".Activity.ForgetActivity"
             android:exported="false" />
@@ -38,6 +39,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+<!--        <activity android:name="com.canhub.cropper.CropImageActivity"-->
+<!--            android:theme="@style/Base.Theme.AppCompat"/> &lt;!&ndash; optional (needed if default theme has no action bar) &ndash;&gt;-->
 
         <meta-data
             android:name="com.google.android.gms.version"

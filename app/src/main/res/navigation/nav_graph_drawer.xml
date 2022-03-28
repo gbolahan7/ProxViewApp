@@ -14,10 +14,25 @@
         android:id="@+id/buttonSetting"
         android:name="uk.ac.tees.b1110843.proxviewapp.Fragments.SettingsFragment"
         android:label="fragment_settings"
-        tools:layout="@layout/fragment_settings" />
+        tools:layout="@layout/fragment_settings" >
+
+        <argument
+            android:name="userPassword"
+            app:argType="boolean"
+            android:defaultValue="false"
+            app:popUpTo="@id/buttonSetting"/>
+        <action
+            android:id="@+id/action_buttonSetting_to_updatePasswordFragment"
+            app:destination="@id/updatePasswordFragment" />
+    </fragment>
     <fragment
         android:id="@+id/buttonLocation"
         android:name="uk.ac.tees.b1110843.proxviewapp.Fragments.SavedLocationsFragment"
         android:label="fragment_saved_locations"
         tools:layout="@layout/fragment_saved_locations" />
+    <fragment
+        android:id="@+id/updatePasswordFragment"
+        android:name="uk.ac.tees.b1110843.proxviewapp.Fragments.UpdatePasswordFragment"
+        android:label="fragment_update_password"
+        tools:layout="@layout/fragment_update_password" />
 </navigation>

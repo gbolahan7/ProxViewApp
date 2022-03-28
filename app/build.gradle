@@ -2,6 +2,7 @@ plugins {
     id 'com.android.application'
     id 'com.google.gms.google-services'
     id 'com.google.secrets_gradle_plugin' version '0.4'
+    id 'androidx.navigation.safeargs'
 }
 
 android {
@@ -69,11 +70,11 @@ dependencies {
 
     implementation 'de.hdodenhof:circleimageview:3.1.0'
 
-    def nav_version = "2.4.1"
+//    def nav_version = "2.4.1"
 
     // Java language implementation
-    implementation "androidx.navigation:navigation-fragment:$nav_version"
-    implementation "androidx.navigation:navigation-ui:$nav_version"
+    implementation "androidx.navigation:navigation-fragment:2.4.1"
+    implementation "androidx.navigation:navigation-ui:2.4.1"
 
 
     //Dependency for the glide library
@@ -86,8 +87,7 @@ dependencies {
 //     api 'com.theartofdev.edmodo:android-image-cropper:2.8.*'
 
 
-//    implementation "com.github.CanHub:Android-Image-Cropper:4.1.0"
-
+//    implementation 'com.github.CanHub:Android-Image-Cropper:4.2.0'
 
     // Library for drawing curves
     implementation 'io.github.florent37:shapeofview:1.4.7'

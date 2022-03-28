@@ -26,11 +26,15 @@ import uk.ac.tees.b1110843.proxviewapp.databinding.ActivityMainBinding;
 import uk.ac.tees.b1110843.proxviewapp.databinding.NavdrawerLayoutBinding;
 import uk.ac.tees.b1110843.proxviewapp.databinding.ToolbarLayoutBinding;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
 
 public class MainActivity extends AppCompatActivity {
 
+    private ActivityMainBinding activityMainBinding;
     private NavdrawerLayoutBinding navDrawerLayoutBinding;
     private ToolbarLayoutBinding toolbarLayoutBinding;
+    private CircleImageView imgHeader;
 //    private FirebaseDatabase firebaseAuth;
     private FirebaseAuth firebaseAuth;
     private TextView textName, textEmail;
@@ -90,6 +94,7 @@ public class MainActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot snapshot){
                 if(snapshot.exists()){
                     UserModel userModel=snapshot.getValue(UserModel.class);
+//                    Glide.with(MainActivity.this).load(userModel.getImage()).into(imgHeader);
                     textName.setText(userModel.getUsername());
                     textEmail.setText(userModel.getEmail());
 
@@ -102,4 +107,5 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+
 }

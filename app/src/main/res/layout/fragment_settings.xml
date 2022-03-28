@@ -127,15 +127,15 @@
                                 android:textSize="15dp"
                                 android:textStyle="bold" />
 
-                            <TextView
-                                android:id="@+id/MailText"
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight=".5"
-                                android:text="Verify Email"
-                                android:textColor="#b51a1a"
-                                android:textStyle="bold"
-                                android:visibility="gone" />
+<!--                            <TextView-->
+<!--                                android:id="@+id/MailText"-->
+<!--                                android:layout_width="0dp"-->
+<!--                                android:layout_height="wrap_content"-->
+<!--                                android:layout_weight=".5"-->
+<!--                                android:text="Verify Email"-->
+<!--                                android:textColor="#b51a1a"-->
+<!--                                android:textStyle="bold"-->
+<!--                                android:visibility="gone" />-->
                         </LinearLayout>
 
                         <ImageView
