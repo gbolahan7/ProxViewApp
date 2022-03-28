@@ -47,8 +47,8 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
 
         // config action bar, title,
-        actionBar = getSupportActionBar();
-        actionBar.setTitle("LogIn");
+//        actionBar = getSupportActionBar();
+//        actionBar.setTitle("LogIn");
 
         // config progress dialog
 

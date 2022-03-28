@@ -104,32 +104,13 @@ public class SettingsFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("Settings");
+//        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("Settings");
         binding.EmailText.setText(firebaseAuth.getCurrentUser().getEmail());
         binding.usernameText.setText(firebaseAuth.getCurrentUser().getDisplayName());
 
 //        Glide.with(requireContext()).load(firebaseAuth.getCurrentUser().getPhotoUrl().into(binding.imgProfile));
-//
-//        if(firebaseAuth.getCurrentUser().isEmailVerified()){
-//            binding.MailText.setVisibility(View.GONE);
-//        }else{
-//            binding.MailText.setVisibility(View.VISIBLE);
-//        }
 
-        //send verification email on click
-//        binding.MailText.setOnClickListener(verify->{
-//            firebaseAuth.getCurrentUser().sendEmailVerification().addOnCompleteListener(new OnCompleteListener<Void>(){
-//                @Override
-//                public void onComplete(@NonNull Task<Void> task) {
-//                    if(task.isSuccessful()){
-//                        Toast.makeText(getContext(), "Email verification sent", Toast.LENGTH_SHORT).show();
-//                    }else{
-//                        Toast.makeText(getContext(), ""+task.getException(), Toast.LENGTH_SHORT).show();
-//                        Log.d("TAG", "onComplete: user email " + task.getException());
-//                    }
-//                }
-//            });
-//        });
+
     }
 
     @Override
