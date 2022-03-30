@@ -3,15 +3,99 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".Fragments.HomeFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+   <fragment
+       android:layout_width="match_parent"
+       android:layout_height="match_parent"
+       android:name="com.google.android.gms.maps.SupportMapFragment"
+       android:id="@+id/mapDefault"/>
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:layout_height="110dp"
+        android:id="@+id/coordinate">
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            app:boxBackgroundColor="@color/white"
+            app:boxCornerRadiusBottomEnd="20dp"
+            android:elevation="10dp"
+            app:boxCornerRadiusBottomStart="20dp"
+            app:boxCornerRadiusTopEnd="20dp"
+            app:boxCornerRadiusTopStart="20dp"
+            app:hintEnabled="false"
+            app:boxStrokeWidth="0dp"
+            app:endIconMode="clear_text"
+            app:boxStrokeColor="@color/white"
+            android:layout_marginHorizontal="40dp"
+            app:layout_anchor="@id/view"
+            app:layout_anchorGravity="bottom|center">
+
+
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:drawableStart="@drawable/ic_location"
+            android:drawableTint="@color/primaryColor"
+            android:hint="Find a location"
+            android:textColorHint="@color/itemTextColor"
+            android:inputType="text"
+            android:maxLines="1"
+            android:drawablePadding="12dp"
+            android:id="@+id/addressText"/>
+        </com.google.android.material.textfield.TextInputLayout>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/view"
+            android:background="@color/primaryColor"
+            android:elevation="5dp"
+            android:layout_marginBottom="25dp"/>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+    <HorizontalScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:scrollbars="none"
+        android:layout_below="@+id/coordinate"
+        android:id="@+id/locationLists">
+
+        <com.google.android.material.chip.ChipGroup
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/locationGroup"
+            style="@style/Widget.MaterialComponents.Chip.Choice"
+            app:singleSelection="true"
+            app:singleLine="true"/>
+
+    </HorizontalScrollView>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/mapViewButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:textStyle="bold"
-        android:textSize="50dp"
-        android:text="Home Fragment" />
+        android:layout_below="@id/locationLists"
+        android:layout_alignParentEnd="true"
+        android:layout_margin="15dp"
+        android:src="@drawable/ic_mapview"
+        android:tint="@color/primaryColor"
+        android:backgroundTint="@color/white"
+        app:fabCustomSize="38dp" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/presentLocation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/mapViewButton"
+        android:layout_alignParentEnd="true"
+        android:layout_margin="15dp"
+        android:src="@drawable/ic_currentloc"
+        android:tint="@color/primaryColor"
+        android:backgroundTint="@color/white"
+        app:fabCustomSize="38dp" />
 
 </RelativeLayout>

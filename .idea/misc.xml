@@ -3,6 +3,7 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/User/AndroidStudioProjects/ProxViewApp/app/src/main/res/drawable/home_background.xml" value="0.1" />
         <entry key="..\:/Users/User/AndroidStudioProjects/ProxViewApp/app/src/main/res/drawable/ic_email.xml" value="0.1345" />
         <entry key="..\:/Users/User/AndroidStudioProjects/ProxViewApp/app/src/main/res/layout/activity_forget.xml" value="0.20416666666666666" />
         <entry key="..\:/Users/User/AndroidStudioProjects/ProxViewApp/app/src/main/res/layout/activity_login.xml" value="0.25" />
@@ -13,7 +14,7 @@
         <entry key="..\:/Users/User/AndroidStudioProjects/ProxViewApp/app/src/main/res/layout/activity_splash.xml" value="0.22" />
         <entry key="..\:/Users/User/AndroidStudioProjects/ProxViewApp/app/src/main/res/layout/dialog_layout.xml" value="0.20416666666666666" />
         <entry key="..\:/Users/User/AndroidStudioProjects/ProxViewApp/app/src/main/res/layout/dialoy_ui.xml" value="0.20416666666666666" />
-        <entry key="..\:/Users/User/AndroidStudioProjects/ProxViewApp/app/src/main/res/layout/fragment_home.xml" value="0.1838768115942029" />
+        <entry key="..\:/Users/User/AndroidStudioProjects/ProxViewApp/app/src/main/res/layout/fragment_home.xml" value="0.22" />
         <entry key="..\:/Users/User/AndroidStudioProjects/ProxViewApp/app/src/main/res/layout/fragment_saved_locations.xml" value="0.1838768115942029" />
         <entry key="..\:/Users/User/AndroidStudioProjects/ProxViewApp/app/src/main/res/layout/fragment_settings.xml" value="0.22" />
         <entry key="..\:/Users/User/AndroidStudioProjects/ProxViewApp/app/src/main/res/layout/fragment_update_password.xml" value="0.1638418079096045" />
