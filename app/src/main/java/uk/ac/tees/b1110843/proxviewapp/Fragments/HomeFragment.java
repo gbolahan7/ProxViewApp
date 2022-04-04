@@ -19,6 +19,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.PopupMenu;
 import android.widget.Toast;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -71,8 +72,31 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
         binding = FragmentHomeBinding.inflate(inflater, container, false);
         appPermissions = new AppPermissions();
         firebaseAuth = FirebaseAuth.getInstance();
+
+        binding.mapViewButton.setOnClickListener(view -> {
+            PopupMenu popupMenu = new PopupMenu(requireContext(), view);
+            popupMenu.getMenuInflater().inflate(R.menu.map_type_menu, popupMenu.getMenu());
+
+
+            popupMenu.setOnMenuItemClickListener(item -> {
+                switch (item.getItemId()) {
+                    case R.id.defaultButton:
+                        mGoogleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
+                        break;
+
+                    case R.id.satelliteButton:
+                        mGoogleMap.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
+                        break;
+                }
+                return true;
+            });
+            popupMenu.show();
+        });
+        // display current location
+        binding.presentLocation.setOnClickListener(currentLocation -> getCurrentLocation());
         return binding.getRoot();
     }
+
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
