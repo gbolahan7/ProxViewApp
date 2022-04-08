@@ -2,15 +2,20 @@ package uk.ac.tees.b1110843.proxviewapp.Fragments;
 
 import android.Manifest;
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 //import android.location.LocationRequest;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
 
@@ -33,6 +38,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
@@ -41,12 +47,25 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.chip.Chip;
+import com.google.android.material.chip.ChipGroup;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.gson.Gson;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 import uk.ac.tees.b1110843.proxviewapp.Constant.Constants;
+import uk.ac.tees.b1110843.proxviewapp.GooglePlaceModel;
 import uk.ac.tees.b1110843.proxviewapp.LocationModel;
+import uk.ac.tees.b1110843.proxviewapp.Model.GoogleResponseModel;
 import uk.ac.tees.b1110843.proxviewapp.Permissions.AppPermissions;
 import uk.ac.tees.b1110843.proxviewapp.R;
+import uk.ac.tees.b1110843.proxviewapp.WebServices.RetrofitAPI;
+import uk.ac.tees.b1110843.proxviewapp.WebServices.RetrofitClient;
 import uk.ac.tees.b1110843.proxviewapp.databinding.FragmentHomeBinding;
 
 public class HomeFragment extends Fragment implements OnMapReadyCallback {
@@ -61,6 +80,12 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
     private LocationCallback locationCallback;
     private Location currentLocation;
     private Marker currentMarker;
+    private ProgressDialog progressDialog;
+    private RetrofitAPI retrofitAPI;
+    private int radius=3000;
+    private ArrayList<String> userSavedLocationId;
+    private List<GooglePlaceModel> googlePlaceModelList;
+    private LocationModel selectedLocationModel;
 
     public HomeFragment() {
     }
@@ -72,6 +97,10 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
         binding = FragmentHomeBinding.inflate(inflater, container, false);
         appPermissions = new AppPermissions();
         firebaseAuth = FirebaseAuth.getInstance();
+        progressDialog = new ProgressDialog(requireActivity());
+        retrofitAPI= RetrofitClient.getRetrofitClient().create(RetrofitAPI.class);
+        googlePlaceModelList = new ArrayList<>();
+        userSavedLocationId = new ArrayList<>();
 
         binding.mapViewButton.setOnClickListener(view -> {
             PopupMenu popupMenu = new PopupMenu(requireContext(), view);
@@ -94,6 +123,19 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
         });
         // display current location
         binding.presentLocation.setOnClickListener(currentLocation -> getCurrentLocation());
+
+        binding.locationGroup.setOnCheckedChangeListener(new ChipGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(ChipGroup group, int checkedId) {
+
+                if (checkedId != -1) {
+                    LocationModel locationModel = Constants.locationsName.get(checkedId - 1);
+                    binding.addressText.setText(locationModel.getName());
+                    selectedLocationModel = locationModel;
+                    getPlaces(locationModel.getLocationType());
+                }
+            }
+        });
         return binding.getRoot();
     }
 
@@ -128,7 +170,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
         mGoogleMap = googleMap;
 
         if (appPermissions.isLocationOn(requireContext())) {
-//            isLocationPermissionOn = true;
+            isLocationPermissionOk = true;
 
             setUpGoogleMap();
         } else if (ActivityCompat.shouldShowRequestPermissionRationale(requireActivity(), Manifest.permission.ACCESS_FINE_LOCATION)) {
@@ -294,4 +336,87 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
         }
     }
 
+    //get the response
+    private void getPlaces(String placeName){
+
+        if(isLocationPermissionOk) {
+            progressDialog.show();
+            String url = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location="
+                 + currentLocation.getLatitude() + "," + currentLocation.getLongitude()
+                    + "&radius=" + radius + "&type=" + placeName + "&key=" + getResources().getString(R.string.GOOGLE_API_KEY);
+            Log.d("mydebug", url );
+
+            if (currentLocation != null) {
+                retrofitAPI.getNearByPlaces(url).enqueue(new Callback<GoogleResponseModel>() {
+                    @Override
+                    public void onResponse(@NonNull Call<GoogleResponseModel> call, @NonNull Response<GoogleResponseModel> response) {
+                        Gson gson = new Gson();
+                        String res = gson.toJson(response.body());
+                        Log.d("TAG", "onResponse: " + res);
+                        if (response.errorBody() == null) {
+                            if (response.body() != null) {
+                                if (response.body().getGooglePlaceModelList() != null &&
+                                        response.body().getGooglePlaceModelList().size() > 0) {
+                                    googlePlaceModelList.clear();
+                                    mGoogleMap.clear();
+                                    for (int i = 0; i < response.body().getGooglePlaceModelList().size(); i++) {
+                                        googlePlaceModelList.add(response.body().getGooglePlaceModelList().get(i));
+                                        addMarker(response.body().getGooglePlaceModelList().get(i), i);
+                                    }
+                                } else {
+                                    mGoogleMap.clear();
+                                    googlePlaceModelList.clear();
+                                    radius += 1000;
+//                                    Log.d("TAG", "onResponse: " + radius);
+                                    getPlaces(placeName);
+                                }
+                            }
+
+                        } else {
+                            Log.d("TAG", "onResponse: " + response.errorBody());
+                            Toast.makeText(requireContext(), "Error : " + response.errorBody(), Toast.LENGTH_SHORT).show();
+                        }
+                        progressDialog.dismiss();
+                    }
+
+                    @Override
+                    public void onFailure(Call<GoogleResponseModel> call, Throwable t) {
+                        Log.d("TAG", "onFailure: " + t);
+                        progressDialog.dismiss();
+
+                    }
+                });
+            }
+        }
+
+    }
+        //custom marker
+    private void addMarker(GooglePlaceModel googlePlaceModel, int position) {
+        MarkerOptions markerOptions = new MarkerOptions()
+                .position(new LatLng(googlePlaceModel.getGeometry().getLocation().getLat(),
+                        googlePlaceModel.getGeometry().getLocation().getLng()))
+                .title(googlePlaceModel.getName())
+                .snippet(googlePlaceModel.getVicinity());
+        markerOptions.icon(getCustomIcon());
+        mGoogleMap.addMarker(markerOptions).setTag(position);
+
+    }
+
+    private BitmapDescriptor getCustomIcon() {
+
+        Drawable background = ContextCompat.getDrawable(requireContext(), R.drawable.ic_location);
+        background.setTint(getResources().getColor(R.color.purple_700, null));
+        background.setBounds(0, 0, background.getIntrinsicWidth(), background.getIntrinsicHeight());
+        Bitmap bitmap = Bitmap.createBitmap(background.getIntrinsicWidth(), background.getIntrinsicHeight(),
+                Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(bitmap);
+        background.draw(canvas);
+        return BitmapDescriptorFactory.fromBitmap(bitmap);
+    }
+
+//    @Override
+//    public boolean onMarkerClick(@NonNull Marker marker) {
+//        return false;
+//    }
 }
+

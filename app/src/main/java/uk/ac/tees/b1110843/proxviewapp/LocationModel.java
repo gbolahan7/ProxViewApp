@@ -41,4 +41,12 @@ public class LocationModel {
 
         this.drawableId = drawableId;
     }
+
+    public String getLocationType() {
+        return locationType;
+    }
+
+    public void setPlaceType(String placeType) {
+        this.locationType = placeType;
+    }
 }
