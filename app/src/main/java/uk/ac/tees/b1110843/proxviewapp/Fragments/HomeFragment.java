@@ -18,6 +18,10 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.PagerSnapHelper;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.SnapHelper;
 
 import android.os.Looper;
 import android.util.Log;
@@ -58,6 +62,7 @@ import java.util.List;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import uk.ac.tees.b1110843.proxviewapp.Adapter.GooglePlaceAdapter;
 import uk.ac.tees.b1110843.proxviewapp.Constant.Constants;
 import uk.ac.tees.b1110843.proxviewapp.GooglePlaceModel;
 import uk.ac.tees.b1110843.proxviewapp.LocationModel;
@@ -68,7 +73,7 @@ import uk.ac.tees.b1110843.proxviewapp.WebServices.RetrofitAPI;
 import uk.ac.tees.b1110843.proxviewapp.WebServices.RetrofitClient;
 import uk.ac.tees.b1110843.proxviewapp.databinding.FragmentHomeBinding;
 
-public class HomeFragment extends Fragment implements OnMapReadyCallback {
+public class HomeFragment extends Fragment implements OnMapReadyCallback,  GoogleMap.OnMarkerClickListener {
 
     private FragmentHomeBinding binding;
     private GoogleMap mGoogleMap;
@@ -84,6 +89,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
     private RetrofitAPI retrofitAPI;
     private int radius=3000;
     private ArrayList<String> userSavedLocationId;
+    private GooglePlaceAdapter googlePlaceAdapter;
     private List<GooglePlaceModel> googlePlaceModelList;
     private LocationModel selectedLocationModel;
 
@@ -163,6 +169,8 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
             binding.locationGroup.addView(chip);
 
         }
+
+        setUpRecyclerView();
     }
 
     @Override
@@ -219,6 +227,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
         }
         mGoogleMap.setMyLocationEnabled(true);
         mGoogleMap.getUiSettings().setTiltGesturesEnabled(true);
+        mGoogleMap.setOnMarkerClickListener(this::onMarkerClick);
 
         setUpLocationUpdate();
     }
@@ -363,9 +372,11 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
                                         googlePlaceModelList.add(response.body().getGooglePlaceModelList().get(i));
                                         addMarker(response.body().getGooglePlaceModelList().get(i), i);
                                     }
+                                    googlePlaceAdapter.setGooglePlaceModels(googlePlaceModelList);
                                 } else {
                                     mGoogleMap.clear();
                                     googlePlaceModelList.clear();
+                                    googlePlaceAdapter.setGooglePlaceModels(googlePlaceModelList);
                                     radius += 1000;
 //                                    Log.d("TAG", "onResponse: " + radius);
                                     getPlaces(placeName);
@@ -414,9 +425,48 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
         return BitmapDescriptorFactory.fromBitmap(bitmap);
     }
 
+    private void setUpRecyclerView() {
+
+        binding.locationRecyclerV.setLayoutManager(new LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false));
+        binding.locationRecyclerV.setHasFixedSize(false);
+        googlePlaceAdapter = new GooglePlaceAdapter();
+        binding.locationRecyclerV.setAdapter(googlePlaceAdapter);
+
+        SnapHelper snapHelper = new PagerSnapHelper();
+
+        snapHelper.attachToRecyclerView(binding.locationRecyclerV);
+
+        binding.locationRecyclerV.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                LinearLayoutManager linearLayoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
+
+                int position = linearLayoutManager.findFirstCompletelyVisibleItemPosition();
+                if (position > -1) {
+                    GooglePlaceModel googlePlaceModel = googlePlaceModelList.get(position);
+                    mGoogleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(googlePlaceModel.getGeometry().getLocation().getLat(),
+                            googlePlaceModel.getGeometry().getLocation().getLng()), 20));
+                }
+            }
+        });
+
+    }
+    @Override
+    public boolean onMarkerClick(Marker marker) {
+
+        int markerTag = (int) marker.getTag();
+        Log.d("TAG", "onMarkerClick: " + markerTag);
+
+        binding.locationRecyclerV.scrollToPosition(markerTag);
+        return false;
+    }
+
+
 //    @Override
 //    public boolean onMarkerClick(@NonNull Marker marker) {
 //        return false;
 //    }
+
 }
 
