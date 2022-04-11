@@ -5,6 +5,9 @@
         <variable
             name="googlePlaceModel"
             type="uk.ac.tees.b1110843.proxviewapp.GooglePlaceModel" />
+        <variable
+            name="listener"
+            type="uk.ac.tees.b1110843.proxviewapp.LocationInterface" />
     </data>
 
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
@@ -23,7 +26,7 @@
         android:weightSum="2">
 
         <ImageView
-            loadImage="@{googlePlaceModel}"
+            loadImage="@{googlePlaceModel.icon}"
             android:layout_width="0dp"
             android:layout_height="100dp"
             android:layout_weight="0.5"
@@ -65,7 +68,8 @@
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:layout_alignParentEnd="true"
-                android:src="@drawable/ic_bookmark"
+                android:src="@{googlePlaceModel.saved?@drawable/ic_bookmarked:@drawable/ic_bookmark}"
+                android:onClick="@{()->listener.onSaveClick(googlePlaceModel)}"
                 app:tint="@color/primaryColor" />
 
             <ImageView
@@ -73,6 +77,7 @@
                 android:layout_height="30dp"
                 android:layout_toStartOf="@+id/savedLocationImg"
                 android:src="@drawable/ic_direction"
+                android:onClick="@{()->listener.onDirectionClick(googlePlaceModel)}"
                 app:tint="@color/primaryColor" />
         </RelativeLayout>
 

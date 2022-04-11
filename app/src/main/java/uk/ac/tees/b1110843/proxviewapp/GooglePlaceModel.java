@@ -171,4 +171,12 @@ public class GooglePlaceModel {
     public void setVicinity(String vicinity) {
         this.vicinity = vicinity;
     }
+
+    public boolean isSaved() {
+        return isSaved;
+    }
+
+    public void setSaved(boolean saved) {
+        isSaved = saved;
+    }
 }

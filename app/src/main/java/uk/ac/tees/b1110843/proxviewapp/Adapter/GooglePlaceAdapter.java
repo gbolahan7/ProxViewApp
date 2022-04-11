@@ -11,17 +11,18 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
 import uk.ac.tees.b1110843.proxviewapp.GooglePlaceModel;
+import uk.ac.tees.b1110843.proxviewapp.LocationInterface;
 import uk.ac.tees.b1110843.proxviewapp.R;
 import uk.ac.tees.b1110843.proxviewapp.databinding.LocationItemLayoutBinding;
 
 public class GooglePlaceAdapter extends RecyclerView.Adapter<GooglePlaceAdapter.ViewHolder> {
 
     private List<GooglePlaceModel> googlePlaceModels;
-//    private NearLocationInterface nearLocationInterface;
+    private LocationInterface locationInterface;
 
-//    public GooglePlaceAdapter(NearLocationInterface nearLocationInterface) {
-//        this.nearLocationInterface = nearLocationInterface;
-//    }
+    public GooglePlaceAdapter(LocationInterface nearLocationInterface) {
+        this.locationInterface = locationInterface;
+    }
 
     @NonNull
     @Override
@@ -37,7 +38,7 @@ public class GooglePlaceAdapter extends RecyclerView.Adapter<GooglePlaceAdapter.
         if (googlePlaceModels != null) {
             GooglePlaceModel locationModel = googlePlaceModels.get(position);
             holder.binding.setGooglePlaceModel(locationModel);
-//            holder.binding.setListener(nearLocationInterface);
+            holder.binding.setListener(locationInterface);
         }
 
     }
