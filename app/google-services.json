@@ -1,6 +1,7 @@
 {
   "project_info": {
     "project_number": "107554305134",
+    "firebase_url": "https://proxview-app-default-rtdb.firebaseio.com",
     "project_id": "proxview-app",
     "storage_bucket": "proxview-app.appspot.com"
   },

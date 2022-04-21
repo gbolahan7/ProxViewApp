@@ -5,8 +5,8 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
-import uk.ac.tees.b1110843.proxviewapp.Model.GeometryModel;
-import uk.ac.tees.b1110843.proxviewapp.Model.PhotoModel;
+import uk.ac.tees.b1110843.proxviewapp.Model.GooglePlaceModel.GeometryModel;
+import uk.ac.tees.b1110843.proxviewapp.Model.GooglePlaceModel.PhotoModel;
 
 public class GooglePlaceModel {
 

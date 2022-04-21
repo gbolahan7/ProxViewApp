@@ -60,14 +60,16 @@ dependencies {
 
     // FirebaseUI for Firebase Realtime Database
     implementation 'com.firebaseui:firebase-ui-database:8.0.0'
-    implementation 'com.google.firebase:firebase-database:20.0.3'
-    implementation 'com.google.firebase:firebase-auth:21.0.1'
-    implementation 'com.google.firebase:firebase-storage:20.0.0'
+    implementation 'com.google.firebase:firebase-database:20.0.4'
+    implementation 'com.google.firebase:firebase-auth:21.0.3'
+    implementation 'com.google.firebase:firebase-storage:20.0.1'
 
     //google map dependencies
     implementation 'com.google.maps.android:android-maps-utils:2.3.0'
     implementation 'com.google.android.gms:play-services-maps:18.0.2'
     implementation 'com.google.android.libraries.places:places:2.6.0'
+    implementation 'com.google.maps:google-maps-services:0.2.9'
+
 
     //Retrofit library dependency
     implementation 'com.google.code.gson:gson:2.9.0'
@@ -75,33 +77,27 @@ dependencies {
     implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
     implementation 'com.squareup.retrofit2:converter-scalars:2.9.0'
 
-
+    // library for circle image
     implementation 'de.hdodenhof:circleimageview:3.1.0'
 
-//    def nav_version = "2.4.1"
-
-    // Java language implementation
+    // Navigation implementation
     implementation "androidx.navigation:navigation-fragment:2.4.1"
     implementation "androidx.navigation:navigation-ui:2.4.1"
 
 
     //Dependency for the glide library
-    implementation 'com.github.bumptech.glide:glide:4.13.0'
+    implementation 'com.github.bumptech.glide:glide:4.13.1'
     // Glide v4 uses this new annotation processor -- see https://bumptech.github.io/glide/doc/generatedapi.html
     annotationProcessor 'com.github.bumptech.glide:compiler:4.13.0'
 
     //Library for cropping Image
 //    implementation "com.github.CanHub:Android-Image-Cropper:$androidImageCropperVersion"
-//     api 'com.theartofdev.edmodo:android-image-cropper:2.8.*'
+//    api 'com.theartofdev.edmodo:android-image-cropper:2.8.0'
 
 
-//    implementation 'com.github.CanHub:Android-Image-Cropper:4.2.0'
+//    implementation 'com.github.CanHub:Android-Image-Cropper:4.2.1'
 
     // Library for drawing curves
     implementation 'io.github.florent37:shapeofview:1.4.7'
-
-//    implementation 'com.victor:lib:1.0.4'
-
-    implementation 'com.mikhaellopez:circularprogressbar:3.1.0'
 
 }

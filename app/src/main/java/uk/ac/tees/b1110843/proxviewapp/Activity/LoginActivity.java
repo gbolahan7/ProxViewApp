@@ -60,7 +60,7 @@ public class LoginActivity extends AppCompatActivity {
 
         //initialize firebase auth
         firebaseAuth = FirebaseAuth.getInstance();
-//        checkUser();
+        checkUser();
 
         //if no accunt go to signup
         binding.buttonRegister.setOnClickListener(new View.OnClickListener(){
@@ -113,6 +113,7 @@ public class LoginActivity extends AppCompatActivity {
     private void firebaseLogin(){
         //show the progress dialog
         progressDialog.show();
+        FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
         firebaseAuth.signInWithEmailAndPassword(email, password)
                 .addOnSuccessListener(new OnSuccessListener<AuthResult>() {
                     @Override
@@ -120,8 +121,8 @@ public class LoginActivity extends AppCompatActivity {
                         //login success
                         //get user infor
                         FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
-//                        String email = firebaseUser.getEmail();
-//                        Toast.makeText(LoginActivity.this, "LoggedIn\n"+email, Toast.LENGTH_SHORT).show();
+                        String email = firebaseUser.getEmail();
+                        Toast.makeText(LoginActivity.this, "LoggedIn\n"+email, Toast.LENGTH_SHORT).show();
 
                         //open profile activity
                         startActivity(new Intent(LoginActivity.this, MainActivity.class ));

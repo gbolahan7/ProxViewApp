@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<layout>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
     <data>
         <variable
             name="googlePlaceModel"
             type="uk.ac.tees.b1110843.proxviewapp.GooglePlaceModel" />
         <variable
             name="listener"
-            type="uk.ac.tees.b1110843.proxviewapp.LocationInterface" />
+            type="uk.ac.tees.b1110843.proxviewapp.NearLocationInterface" />
     </data>
 
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -63,13 +63,13 @@
                 android:text="@{googlePlaceModel.userRatingsTotal!=null?`(`+String.valueOf(googlePlaceModel.userRatingsTotal)+`)`:``,default=`(123)`}"
                 android:textColor="@color/itemTextColor" />
 
-            <ImageView
+            <ImageButton
                 android:id="@+id/savedLocationImg"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:layout_alignParentEnd="true"
-                android:src="@{googlePlaceModel.saved?@drawable/ic_bookmarked:@drawable/ic_bookmark}"
                 android:onClick="@{()->listener.onSaveClick(googlePlaceModel)}"
+                android:src="@{googlePlaceModel.saved?@drawable/ic_bookmarked:@drawable/ic_bookmark}"
                 app:tint="@color/primaryColor" />
 
             <ImageView

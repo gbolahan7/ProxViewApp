@@ -6,11 +6,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".Fragments.HomeFragment">
 
-   <fragment
-       android:layout_width="match_parent"
-       android:layout_height="match_parent"
-       android:name="com.google.android.gms.maps.SupportMapFragment"
-       android:id="@+id/mapDefault"/>
+    <fragment
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:name="com.google.android.gms.maps.SupportMapFragment"
+        android:id="@+id/mapDefault"/>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
@@ -36,17 +36,17 @@
 
 
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:drawableStart="@drawable/ic_location"
-            android:drawableTint="@color/primaryColor"
-            android:hint="Find a location"
-            android:textColorHint="@color/itemTextColor"
-            android:inputType="text"
-            android:maxLines="1"
-            android:drawablePadding="12dp"
-            android:id="@+id/addressText"/>
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawableStart="@drawable/ic_location"
+                android:drawableTint="@color/primaryColor"
+                android:hint="Find a location"
+                android:textColorHint="@color/itemTextColor"
+                android:inputType="text"
+                android:maxLines="1"
+                android:drawablePadding="12dp"
+                android:id="@+id/addressText"/>
         </com.google.android.material.textfield.TextInputLayout>
         <View
             android:layout_width="match_parent"
@@ -99,7 +99,7 @@
         app:fabCustomSize="38dp" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/locationRecyclerV"
+        android:id="@+id/locationRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"

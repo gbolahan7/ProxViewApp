@@ -1,6 +1,6 @@
 package uk.ac.tees.b1110843.proxviewapp;
 
-public interface LocationInterface {
+public interface NearLocationInterface {
 
     void onSaveClick(GooglePlaceModel googlePlaceModel);
 

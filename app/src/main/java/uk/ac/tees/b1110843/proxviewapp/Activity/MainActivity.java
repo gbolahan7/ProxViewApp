@@ -35,7 +35,7 @@ public class MainActivity extends AppCompatActivity {
     private NavdrawerLayoutBinding navDrawerLayoutBinding;
     private ToolbarLayoutBinding toolbarLayoutBinding;
     private CircleImageView imgHeader;
-//    private FirebaseDatabase firebaseAuth;
+    //    private FirebaseDatabase firebaseAuth;
     private FirebaseAuth firebaseAuth;
     private TextView textName, textEmail;
 
@@ -70,11 +70,11 @@ public class MainActivity extends AppCompatActivity {
                 navController
 
         );
-            View headerLayout=navDrawerLayoutBinding.NavView.getHeaderView(0);
-            textName=headerLayout.findViewById(R.id.HeaderName);
-            textEmail=headerLayout.findViewById(R.id.HeaderEmail);
+        View headerLayout=navDrawerLayoutBinding.NavView.getHeaderView(0);
+        textName=headerLayout.findViewById(R.id.HeaderName);
+        textEmail=headerLayout.findViewById(R.id.HeaderEmail);
 
-            getUserData();
+        getUserData();
 
 
     }
@@ -84,7 +84,7 @@ public class MainActivity extends AppCompatActivity {
         if(navDrawerLayoutBinding.NavDrawer.isDrawerOpen(GravityCompat.START))
             navDrawerLayoutBinding.NavDrawer.closeDrawer(GravityCompat.START);
         else
-        super.onBackPressed();
+            super.onBackPressed();
     }
 
     private void getUserData(){

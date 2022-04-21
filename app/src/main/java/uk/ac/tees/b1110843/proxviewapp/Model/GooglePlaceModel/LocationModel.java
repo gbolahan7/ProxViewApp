@@ -1,4 +1,4 @@
-package uk.ac.tees.b1110843.proxviewapp.Model;
+package uk.ac.tees.b1110843.proxviewapp.Model.GooglePlaceModel;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;

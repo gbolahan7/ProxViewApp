@@ -1,66 +1,143 @@
 package uk.ac.tees.b1110843.proxviewapp.Fragments;
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.LinearSnapHelper;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.SnapHelper;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
+
+import com.firebase.ui.database.FirebaseRecyclerAdapter;
+import com.firebase.ui.database.FirebaseRecyclerOptions;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.ArrayList;
 
 import uk.ac.tees.b1110843.proxviewapp.R;
+import uk.ac.tees.b1110843.proxviewapp.SavedLocationInterface;
+import uk.ac.tees.b1110843.proxviewapp.SavedLocationModel;
+import uk.ac.tees.b1110843.proxviewapp.databinding.SavedListLayoutBinding;
+import uk.ac.tees.b1110843.proxviewapp.databinding.FragmentSavedLocationsBinding;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link SavedLocationsFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
-public class SavedLocationsFragment extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
 
-    public SavedLocationsFragment() {
-        // Required empty public constructor
-    }
+public class SavedLocationsFragment extends Fragment implements SavedLocationInterface {
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment SavedLocationsFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static SavedLocationsFragment newInstance(String param1, String param2) {
-        SavedLocationsFragment fragment = new SavedLocationsFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
+    private FragmentSavedLocationsBinding binding;
+    private FirebaseAuth firebaseAuth;
+    private ArrayList<SavedLocationModel> savedLocationModelArrayList;
+    private ProgressDialog progressDialog;
+    private FirebaseRecyclerAdapter<String, ViewHolder> firebaseRecyclerAdapter;
+    private SavedLocationInterface savedLocationInterface;
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
+        binding = FragmentSavedLocationsBinding.inflate(inflater, container, false);
+        savedLocationInterface = this;
+        firebaseAuth = FirebaseAuth.getInstance();
+        savedLocationModelArrayList= new ArrayList<>();
+//        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("Saved Locations");
+
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_saved_locations, container, false);
+        return binding.getRoot();
+    }
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        progressDialog = new ProgressDialog(requireActivity());
+        binding.savedRecyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
+        SnapHelper snapHelper = new LinearSnapHelper();
+        snapHelper.attachToRecyclerView(binding.savedRecyclerView);
+        getSavedLocations();
+    }
+
+    private void getSavedLocations() {
+        progressDialog.show();
+        Query query = FirebaseDatabase.getInstance().getReference("Users")
+                .child(firebaseAuth.getUid()).child("Saved Locations");
+
+        FirebaseRecyclerOptions<String> options = new FirebaseRecyclerOptions.Builder<String>()
+                .setQuery(query, String.class).build();
+
+        firebaseRecyclerAdapter = new FirebaseRecyclerAdapter<String, ViewHolder>(options) {
+            @Override
+            protected void onBindViewHolder(@NonNull ViewHolder holder, int position, @NonNull String saveLocationId) {
+
+                DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Places").child(saveLocationId);
+                reference.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        if (snapshot.exists()) {
+
+                            SavedLocationModel savedLocationModel = snapshot.getValue(SavedLocationModel.class);
+                            holder.binding.setSavedLocationModel(savedLocationModel);
+                            holder.binding.setListener(savedLocationInterface);
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
+
+            }
+
+            @NonNull
+            @Override
+            public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+                SavedListLayoutBinding binding = DataBindingUtil.inflate(LayoutInflater.from(requireContext()),
+                        R.layout.saved_list_layout, parent, false);
+                return new ViewHolder(binding);
+            }
+        };
+
+        binding.savedRecyclerView.setAdapter(firebaseRecyclerAdapter);
+        progressDialog.dismiss();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        firebaseRecyclerAdapter.startListening();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        firebaseRecyclerAdapter.stopListening();
+    }
+
+    @Override
+    public void onLocationClick(SavedLocationModel savedLocationModel) {
+        Toast.makeText(requireContext(), "location selected", Toast.LENGTH_SHORT).show();
+    }
+
+    public class ViewHolder extends RecyclerView.ViewHolder {
+        private SavedListLayoutBinding binding;
+
+        public ViewHolder(@NonNull SavedListLayoutBinding binding) {
+            super(binding.getRoot());
+            this.binding = binding;
+        }
     }
 }

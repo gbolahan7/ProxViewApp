@@ -29,6 +29,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -39,6 +40,7 @@ import com.google.firebase.storage.UploadTask;
 import java.util.HashMap;
 import java.util.Map;
 
+import uk.ac.tees.b1110843.proxviewapp.Activity.LoginActivity;
 import uk.ac.tees.b1110843.proxviewapp.Constant.Constants;
 import uk.ac.tees.b1110843.proxviewapp.Permissions.AppPermissions;
 import uk.ac.tees.b1110843.proxviewapp.R;
@@ -67,6 +69,7 @@ public class SettingsFragment extends Fragment {
         firebaseAuth=FirebaseAuth.getInstance();
         progressDialog = new ProgressDialog(getActivity());
         appPermissions = new AppPermissions();
+        checkUser();
 
         binding.imgCamera.setOnClickListener(camera->{
             if(appPermissions.isStorageOk(getContext())){
@@ -83,17 +86,27 @@ public class SettingsFragment extends Fragment {
 
         binding.cardPassword.setOnClickListener(view -> {
 
-          NavDirections action =
-            SettingsFragmentDirections.actionButtonSettingToUpdatePasswordFragment();
+            NavDirections action =
+                    SettingsFragmentDirections.actionButtonSettingToUpdatePasswordFragment();
 //            action.setIsPassword(true);
             Navigation.findNavController(requireView()).navigate(action);
 //            Navigation.findNavController(getView()).navigate((Uri) NavDirections);
 
         });
 
+        binding.cardLogout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                firebaseAuth.signOut();
+               Intent intent = new Intent(getActivity(), LoginActivity.class);
+                startActivity(intent);
+            }
+        });
+
         // Inflate the layout for this fragment
         return binding.getRoot();
     }
+
 
     private void selectImage() {
 //        CropImage.activity().setCropShape(CropImageView.CropShape.OVAL)
@@ -243,4 +256,17 @@ public class SettingsFragment extends Fragment {
                     }
                 }).create().show();
     }
+
+    private void checkUser() {
+
+        //get current user
+        FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
+        if (firebaseUser == null) {
+
+        }else {
+
+        }
+    }
+
+
 }

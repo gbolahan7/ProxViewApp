@@ -1,7 +1,6 @@
 package uk.ac.tees.b1110843.proxviewapp.Adapter;
 
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
@@ -11,17 +10,17 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
 import uk.ac.tees.b1110843.proxviewapp.GooglePlaceModel;
-import uk.ac.tees.b1110843.proxviewapp.LocationInterface;
+import uk.ac.tees.b1110843.proxviewapp.NearLocationInterface;
 import uk.ac.tees.b1110843.proxviewapp.R;
 import uk.ac.tees.b1110843.proxviewapp.databinding.LocationItemLayoutBinding;
 
 public class GooglePlaceAdapter extends RecyclerView.Adapter<GooglePlaceAdapter.ViewHolder> {
 
     private List<GooglePlaceModel> googlePlaceModels;
-    private LocationInterface locationInterface;
+    private NearLocationInterface nearLocationInterface;
 
-    public GooglePlaceAdapter(LocationInterface nearLocationInterface) {
-        this.locationInterface = locationInterface;
+    public GooglePlaceAdapter(NearLocationInterface nearLocationInterface) {
+        this.nearLocationInterface = this.nearLocationInterface;
     }
 
     @NonNull
@@ -36,9 +35,9 @@ public class GooglePlaceAdapter extends RecyclerView.Adapter<GooglePlaceAdapter.
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 
         if (googlePlaceModels != null) {
-            GooglePlaceModel locationModel = googlePlaceModels.get(position);
-            holder.binding.setGooglePlaceModel(locationModel);
-            holder.binding.setListener(locationInterface);
+            GooglePlaceModel placeModel = googlePlaceModels.get(position);
+            holder.binding.setGooglePlaceModel(placeModel);
+            holder.binding.setListener(nearLocationInterface);
         }
 
     }

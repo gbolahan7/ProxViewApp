@@ -5,12 +5,18 @@ import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
-//import android.location.LocationRequest;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.os.Bundle;
+import android.os.Looper;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.PopupMenu;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -23,20 +29,11 @@ import androidx.recyclerview.widget.PagerSnapHelper;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.SnapHelper;
 
-import android.os.Looper;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.PopupMenu;
-import android.widget.Toast;
-
 import com.google.android.gms.location.FusedLocationProviderClient;
-import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationCallback;
+import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.location.LocationSettingsRequest;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -71,9 +68,9 @@ import retrofit2.Response;
 import uk.ac.tees.b1110843.proxviewapp.Adapter.GooglePlaceAdapter;
 import uk.ac.tees.b1110843.proxviewapp.Constant.Constants;
 import uk.ac.tees.b1110843.proxviewapp.GooglePlaceModel;
-import uk.ac.tees.b1110843.proxviewapp.LocationInterface;
 import uk.ac.tees.b1110843.proxviewapp.LocationModel;
-import uk.ac.tees.b1110843.proxviewapp.Model.GoogleResponseModel;
+import uk.ac.tees.b1110843.proxviewapp.Model.GooglePlaceModel.GoogleResponseModel;
+import uk.ac.tees.b1110843.proxviewapp.NearLocationInterface;
 import uk.ac.tees.b1110843.proxviewapp.Permissions.AppPermissions;
 import uk.ac.tees.b1110843.proxviewapp.R;
 import uk.ac.tees.b1110843.proxviewapp.SavedLocationModel;
@@ -81,7 +78,9 @@ import uk.ac.tees.b1110843.proxviewapp.WebServices.RetrofitAPI;
 import uk.ac.tees.b1110843.proxviewapp.WebServices.RetrofitClient;
 import uk.ac.tees.b1110843.proxviewapp.databinding.FragmentHomeBinding;
 
-public class HomeFragment extends Fragment implements OnMapReadyCallback,  GoogleMap.OnMarkerClickListener, LocationInterface {
+//import android.location.LocationRequest;
+
+public class HomeFragment extends Fragment implements OnMapReadyCallback,  GoogleMap.OnMarkerClickListener, NearLocationInterface {
 
     private FragmentHomeBinding binding;
     private GoogleMap mGoogleMap;
@@ -97,7 +96,8 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,  Googl
     private RetrofitAPI retrofitAPI;
     private int radius=3000;
     private ArrayList<String> userSavedLocationId;
-    private DatabaseReference locationReference,userLocationReference ;
+    private DatabaseReference locationReference;
+    private DatabaseReference userLocationReference;
     private GooglePlaceAdapter googlePlaceAdapter;
     private List<GooglePlaceModel> googlePlaceModelList;
     private LocationModel selectedLocationModel;
@@ -116,9 +116,9 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,  Googl
         retrofitAPI= RetrofitClient.getRetrofitClient().create(RetrofitAPI.class);
         googlePlaceModelList = new ArrayList<>();
         userSavedLocationId = new ArrayList<>();
-        locationReference=FirebaseDatabase.getInstance().getReference("locations");
-        locationReference=FirebaseDatabase.getInstance().getReference("Users").child(firebaseAuth.getUid())
-                            .child("Saved locations");
+        locationReference = FirebaseDatabase.getInstance().getReference("places");
+        userLocationReference = FirebaseDatabase.getInstance().getReference("Users").child(firebaseAuth.getUid())
+                .child("Saved locations");
 
         binding.mapViewButton.setOnClickListener(view -> {
             PopupMenu popupMenu = new PopupMenu(requireContext(), view);
@@ -145,7 +145,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,  Googl
 
         binding.locationGroup.setOnCheckedChangeListener(new ChipGroup.OnCheckedChangeListener() {
             @Override
-    public void onCheckedChanged(ChipGroup group, int checkedId) {
+            public void onCheckedChanged(ChipGroup group, int checkedId) {
 
                 if (checkedId != -1) {
                     LocationModel locationModel = Constants.locationsName.get(checkedId - 1);
@@ -273,25 +273,25 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,  Googl
 
     private void startLocationUpdates(){
 
-            if (ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
-                    && ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                isLocationPermissionOk = false;
-                return;
-            }
-
-            fusedLocationProviderClient.requestLocationUpdates(locationRequest, locationCallback, Looper.getMainLooper())
-                    .addOnCompleteListener(new OnCompleteListener<Void>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Void> task) {
-                            if (task.isSuccessful()) {
-                                Toast.makeText(requireContext(), "Location updated started", Toast.LENGTH_SHORT).show();
-                            }
-
-                        }
-                    });
-
-            getCurrentLocation();
+        if (ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                && ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            isLocationPermissionOk = false;
+            return;
         }
+
+        fusedLocationProviderClient.requestLocationUpdates(locationRequest, locationCallback, Looper.getMainLooper())
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+                            Toast.makeText(requireContext(), "Location updated started", Toast.LENGTH_SHORT).show();
+                        }
+
+                    }
+                });
+
+        getCurrentLocation();
+    }
 
     private void getCurrentLocation() {
 
@@ -322,7 +322,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,  Googl
                 location.getLongitude()), 18);
 
         MarkerOptions markerOptions = new MarkerOptions()
-            .position(new LatLng(location.getLatitude(), location.getLongitude()))
+                .position(new LatLng(location.getLatitude(), location.getLongitude()))
                 .title("Present Location")
                 .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE))
                 .snippet(firebaseAuth.getCurrentUser().getDisplayName());
@@ -366,7 +366,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,  Googl
         if(isLocationPermissionOk) {
             progressDialog.show();
             String url = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location="
-                 + currentLocation.getLatitude() + "," + currentLocation.getLongitude()
+                    + currentLocation.getLatitude() + "," + currentLocation.getLongitude()
                     + "&radius=" + radius + "&type=" + placeName + "&key=" + getResources().getString(R.string.GOOGLE_API_KEY);
             Log.d("mydebug", url );
 
@@ -420,7 +420,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,  Googl
 
     }
 
-        //custom marker
+    //custom marker
     private void addMarker(GooglePlaceModel googlePlaceModel, int position) {
         MarkerOptions markerOptions = new MarkerOptions()
                 .position(new LatLng(googlePlaceModel.getGeometry().getLocation().getLat(),
@@ -446,16 +446,16 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,  Googl
 
     private void setUpRecyclerView() {
 
-        binding.locationRecyclerV.setLayoutManager(new LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false));
-        binding.locationRecyclerV.setHasFixedSize(false);
+        binding.locationRecyclerView.setLayoutManager(new LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false));
+        binding.locationRecyclerView.setHasFixedSize(false);
         googlePlaceAdapter = new GooglePlaceAdapter(this);
-        binding.locationRecyclerV.setAdapter(googlePlaceAdapter);
+        binding.locationRecyclerView.setAdapter(googlePlaceAdapter);
 
         SnapHelper snapHelper = new PagerSnapHelper();
 
-        snapHelper.attachToRecyclerView(binding.locationRecyclerV);
+        snapHelper.attachToRecyclerView(binding.locationRecyclerView);
 
-        binding.locationRecyclerV.addOnScrollListener(new RecyclerView.OnScrollListener() {
+        binding.locationRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
@@ -477,7 +477,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,  Googl
         int markerTag = (int) marker.getTag();
         Log.d("TAG", "onMarkerClick: " + markerTag);
 
-        binding.locationRecyclerV.scrollToPosition(markerTag);
+        binding.locationRecyclerView.scrollToPosition(markerTag);
         return false;
     }
 
@@ -503,14 +503,14 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,  Googl
                     .create().show();
         }else {
             progressDialog.show();
-
-            locationReference.child(googlePlaceModel.getPlaceId()).addListenerForSingleValueEvent(new ValueEventListener() {
+            locationReference.child(googlePlaceModel.getPlaceId()).addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                     if (!snapshot.exists()) {
 
                         SavedLocationModel savedLocationModel = new SavedLocationModel(googlePlaceModel.getName(), googlePlaceModel.getVicinity(),
-                                googlePlaceModel.getPlaceId(), googlePlaceModel.getRating(),
+                                googlePlaceModel.getPlaceId(),
+                                googlePlaceModel.getRating(),
                                 googlePlaceModel.getUserRatingsTotal(),
                                 googlePlaceModel.getGeometry().getLocation().getLat(),
                                 googlePlaceModel.getGeometry().getLocation().getLng());
@@ -579,11 +579,6 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,  Googl
         Toast.makeText(requireContext(), "Direction clicked", Toast.LENGTH_SHORT).show();
     }
 
-
-//    @Override
-//    public boolean onMarkerClick(@NonNull Marker marker) {
-//        return false;
-//    }
     private void getUserSavedLocations() {
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Users")
                 .child(firebaseAuth.getUid()).child("Saved Locations");

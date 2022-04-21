@@ -1,5 +1,6 @@
 package uk.ac.tees.b1110843.proxviewapp;
 
+
 public class LocationModel {
 
     int id, drawableId;

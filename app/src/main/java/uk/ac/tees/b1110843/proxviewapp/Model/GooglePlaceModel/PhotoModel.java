@@ -1,4 +1,4 @@
-package uk.ac.tees.b1110843.proxviewapp.Model;
+package uk.ac.tees.b1110843.proxviewapp.Model.GooglePlaceModel;
 
 import android.widget.ImageView;
 

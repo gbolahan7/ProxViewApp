@@ -1,19 +1,21 @@
 package uk.ac.tees.b1110843.proxviewapp;
 
 public class UserModel {
-    String email, username;
+    String email, username, image;
     boolean isNotificationEnable;
-    String image;
 
-    public UserModel(String email, String username, boolean isNotificationEnable) {
+    public UserModel() {
+
+    }
+
+    public UserModel( String email, String username, boolean isNotificationEnable) {
         this.email = email;
         this.username = username;
         this.isNotificationEnable = isNotificationEnable;
+//        this.image = image;
     }
 
-    public UserModel() {
-        
-    }
+
 
     public String getEmail() {
         return email;
@@ -35,9 +37,9 @@ public class UserModel {
         return image;
     }
 
-//    public void setImage(String image) {
-//        this.image = image;
-//    }
+    public void setImage(String image) {
+        this.image = image;
+    }
 
     public boolean isNotificationEnable() {
         return isNotificationEnable;
