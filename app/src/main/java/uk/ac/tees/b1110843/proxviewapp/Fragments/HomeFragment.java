@@ -116,7 +116,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,  Googl
         retrofitAPI= RetrofitClient.getRetrofitClient().create(RetrofitAPI.class);
         googlePlaceModelList = new ArrayList<>();
         userSavedLocationId = new ArrayList<>();
-        locationReference = FirebaseDatabase.getInstance().getReference("places");
+        locationReference = FirebaseDatabase.getInstance("https://proxview-app-default-rtdb.firebaseio.com/").getReference("places");
         userLocationReference = FirebaseDatabase.getInstance().getReference("Users").child(firebaseAuth.getUid())
                 .child("Saved locations");
 
@@ -284,7 +284,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,  Googl
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         if (task.isSuccessful()) {
-                            Toast.makeText(requireContext(), "Location updated started", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(requireContext(), "", Toast.LENGTH_SHORT).show();
                         }
 
                     }
@@ -568,6 +568,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,  Googl
         userSavedLocationId.add(placeId);
         userLocationReference.setValue(userSavedLocationId);
         Snackbar.make(binding.getRoot(), "Place Saved", Snackbar.LENGTH_LONG).show();
+        Log.d("mydebug", placeId );
     }
 
     private void saveLocation(SavedLocationModel savedLocationModel) {

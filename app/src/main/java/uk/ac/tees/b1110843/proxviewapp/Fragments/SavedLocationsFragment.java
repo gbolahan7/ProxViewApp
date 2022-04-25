@@ -1,143 +1,74 @@
 package uk.ac.tees.b1110843.proxviewapp.Fragments;
 
-import android.app.ProgressDialog;
+import static android.app.Activity.RESULT_CANCELED;
+import static android.app.Activity.RESULT_OK;
+
+import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.databinding.DataBindingUtil;
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.LinearSnapHelper;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.recyclerview.widget.SnapHelper;
-
+import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.firebase.ui.database.FirebaseRecyclerAdapter;
-import com.firebase.ui.database.FirebaseRecyclerOptions;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
-import com.google.firebase.database.ValueEventListener;
-
-import java.util.ArrayList;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
 import uk.ac.tees.b1110843.proxviewapp.R;
-import uk.ac.tees.b1110843.proxviewapp.SavedLocationInterface;
-import uk.ac.tees.b1110843.proxviewapp.SavedLocationModel;
-import uk.ac.tees.b1110843.proxviewapp.databinding.SavedListLayoutBinding;
 import uk.ac.tees.b1110843.proxviewapp.databinding.FragmentSavedLocationsBinding;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 
 
 
-public class SavedLocationsFragment extends Fragment implements SavedLocationInterface {
+
+public class SavedLocationsFragment extends Fragment  {
 
     private FragmentSavedLocationsBinding binding;
-    private FirebaseAuth firebaseAuth;
-    private ArrayList<SavedLocationModel> savedLocationModelArrayList;
-    private ProgressDialog progressDialog;
-    private FirebaseRecyclerAdapter<String, ViewHolder> firebaseRecyclerAdapter;
-    private SavedLocationInterface savedLocationInterface;
 
-    @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+      View view;
+      LinearLayoutManager manager;
+    private FloatingActionButton  btnCapture;
+    private ImageView imgCapture;
+    private static final int Image_Capture_Code = 1;
 
-        binding = FragmentSavedLocationsBinding.inflate(inflater, container, false);
-        savedLocationInterface = this;
-        firebaseAuth = FirebaseAuth.getInstance();
-        savedLocationModelArrayList= new ArrayList<>();
-//        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("Saved Locations");
 
-        // Inflate the layout for this fragment
-        return binding.getRoot();
-    }
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        progressDialog = new ProgressDialog(requireActivity());
-        binding.savedRecyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
-        SnapHelper snapHelper = new LinearSnapHelper();
-        snapHelper.attachToRecyclerView(binding.savedRecyclerView);
-        getSavedLocations();
-    }
+    @Nullable
+//    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        view = inflater.inflate(R.layout.fragment_saved_locations, container, false);
 
-    private void getSavedLocations() {
-        progressDialog.show();
-        Query query = FirebaseDatabase.getInstance().getReference("Users")
-                .child(firebaseAuth.getUid()).child("Saved Locations");
-
-        FirebaseRecyclerOptions<String> options = new FirebaseRecyclerOptions.Builder<String>()
-                .setQuery(query, String.class).build();
-
-        firebaseRecyclerAdapter = new FirebaseRecyclerAdapter<String, ViewHolder>(options) {
+        btnCapture = (FloatingActionButton ) view.findViewById(R.id.btnTakePicture);
+        imgCapture = (ImageView)view.findViewById(R.id.capturedImage);
+        btnCapture.setOnClickListener(new View.OnClickListener() {
             @Override
-            protected void onBindViewHolder(@NonNull ViewHolder holder, int position, @NonNull String saveLocationId) {
+            public void onClick(View v) {
+                Intent cInt = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                startActivityForResult(cInt,Image_Capture_Code);
+            }
+        });
+        return view;
+    }
 
-                DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Places").child(saveLocationId);
-                reference.addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        if (snapshot.exists()) {
 
-                            SavedLocationModel savedLocationModel = snapshot.getValue(SavedLocationModel.class);
-                            holder.binding.setSavedLocationModel(savedLocationModel);
-                            holder.binding.setListener(savedLocationInterface);
-                        }
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
-
-                    }
-                });
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == Image_Capture_Code) {
+            if (resultCode == RESULT_OK) {
+                Bitmap bp = (Bitmap) data.getExtras().get("data");
+                imgCapture.setImageBitmap(bp);
+            } else if (resultCode == RESULT_CANCELED) {
+//                Toast.makeText(this, "Cancelled", Toast.LENGTH_LONG).show();
+                Toast.makeText(getActivity(), "Cancelled", Toast.LENGTH_LONG).show();
 
             }
-
-            @NonNull
-            @Override
-            public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-                SavedListLayoutBinding binding = DataBindingUtil.inflate(LayoutInflater.from(requireContext()),
-                        R.layout.saved_list_layout, parent, false);
-                return new ViewHolder(binding);
-            }
-        };
-
-        binding.savedRecyclerView.setAdapter(firebaseRecyclerAdapter);
-        progressDialog.dismiss();
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        firebaseRecyclerAdapter.startListening();
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        firebaseRecyclerAdapter.stopListening();
-    }
-
-    @Override
-    public void onLocationClick(SavedLocationModel savedLocationModel) {
-        Toast.makeText(requireContext(), "location selected", Toast.LENGTH_SHORT).show();
-    }
-
-    public class ViewHolder extends RecyclerView.ViewHolder {
-        private SavedListLayoutBinding binding;
-
-        public ViewHolder(@NonNull SavedListLayoutBinding binding) {
-            super(binding.getRoot());
-            this.binding = binding;
         }
     }
+
 }
