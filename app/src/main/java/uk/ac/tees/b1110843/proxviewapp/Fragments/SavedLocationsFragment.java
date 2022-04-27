@@ -46,13 +46,16 @@ public class SavedLocationsFragment extends Fragment  {
         btnCapture = (FloatingActionButton ) view.findViewById(R.id.btnTakePicture);
         imgCapture = (ImageView)view.findViewById(R.id.capturedImage);
         btnCapture.setOnClickListener(new View.OnClickListener() {
+
             @Override
             public void onClick(View v) {
                 Intent cInt = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                 startActivityForResult(cInt,Image_Capture_Code);
             }
         });
+
         return view;
+
     }
 
 

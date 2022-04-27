@@ -6,13 +6,15 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
+import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -27,10 +29,14 @@ import uk.ac.tees.b1110843.proxviewapp.databinding.NavdrawerLayoutBinding;
 import uk.ac.tees.b1110843.proxviewapp.databinding.ToolbarLayoutBinding;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+import com.google.android.material.navigation.NavigationView;
+//import Android.App;
 
 
-public class MainActivity extends AppCompatActivity {
 
+
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
+//public class MainActivity extends AppCompatActivity{
     private ActivityMainBinding activityMainBinding;
     private NavdrawerLayoutBinding navDrawerLayoutBinding;
     private ToolbarLayoutBinding toolbarLayoutBinding;
@@ -38,6 +44,12 @@ public class MainActivity extends AppCompatActivity {
     //    private FirebaseDatabase firebaseAuth;
     private FirebaseAuth firebaseAuth;
     private TextView textName, textEmail;
+    private NavigationView navigationView;
+
+//    public MainActivity(ActivityMainBinding activityMainBinding, NavigationView navigationView) {
+//        this.activityMainBinding = activityMainBinding;
+//        this.navigationView = navigationView;
+//    }
 
 
     @Override
@@ -49,7 +61,6 @@ public class MainActivity extends AppCompatActivity {
         toolbarLayoutBinding= activityMainBinding.toolbar;
 
 //        setSupportActionBar(toolbarLayoutBinding.toolbar);
-
         firebaseAuth = FirebaseAuth.getInstance();
 
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -63,8 +74,11 @@ public class MainActivity extends AppCompatActivity {
         navDrawerLayoutBinding.NavDrawer.addDrawerListener(toggle);
         toggle.syncState();
 
+//        mAppBarConfiguration = new AppBarConfiguration.Builder(R.id.buttonAbout).setDrawerLayout(drawer).build()
+
         //connect the drawer layout with nav graph
         NavController navController= Navigation.findNavController(this,R.id.fragmentContainer);
+//        navigationView.setNavigationItemSelectedListener(this);
         NavigationUI.setupWithNavController(
                 navDrawerLayoutBinding.NavView,
                 navController
@@ -74,10 +88,29 @@ public class MainActivity extends AppCompatActivity {
         textName=headerLayout.findViewById(R.id.HeaderName);
         textEmail=headerLayout.findViewById(R.id.HeaderEmail);
 
+//        NavigationView navigationView = findViewById(R.id.nav_view);
+//        navigationView.setNavigationItemSelectedListener(this);
+
         getUserData();
 
+        }
 
-    }
+        @Override
+        public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+            switch (item.getItemId()) {
+
+                case R.id.buttonHelp:
+                    Toast.makeText(MainActivity.this, "Help", Toast.LENGTH_SHORT).show();
+//                    Log.d("TAG", "Help");
+
+                    break;
+                case R.id.buttonAbout:
+                    Toast.makeText(MainActivity.this, "About App", Toast.LENGTH_SHORT).show();
+                    break;
+            }
+            navDrawerLayoutBinding.NavDrawer.closeDrawer(GravityCompat.START);
+            return true;
+        }
 
     @Override
     public void onBackPressed() {
@@ -107,5 +140,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+
+
 
 }

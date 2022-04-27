@@ -6,9 +6,13 @@
     android:layout_height="match_parent"
     tools:context=".Activity.MainActivity">
 
+
+
     <include
         android:id="@+id/toolbar"
         layout="@layout/toolbar_layout" />
+
+
 
     <fragment
         android:id="@+id/fragmentContainer"
@@ -18,5 +22,9 @@
         android:layout_below="@+id/toolbar"
         app:defaultNavHost="true"
         app:navGraph="@navigation/nav_graph_drawer" />
+
+
+
+
 
 </RelativeLayout>

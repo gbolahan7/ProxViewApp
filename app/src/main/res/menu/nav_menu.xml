@@ -13,16 +13,17 @@
         <item android:id="@+id/buttonSetting"
             android:title="Settings"
             android:icon="@drawable/ic_settings"/>
+
     </group>
 
-    <item android:title="">
+    <item android:title="App">
         <menu>
             <item android:id="@+id/buttonHelp"
                 android:title="Help"
                 android:icon="@drawable/ic_help"/>
 
             <item android:id="@+id/buttonAbout"
-                android:title="About"
+                android:title="@string/menu_activity"
                 android:icon="@drawable/ic_about"/>
         </menu>
     </item>

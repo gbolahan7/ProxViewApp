@@ -5,6 +5,10 @@
     android:layout_height="match_parent"
     tools:context=".Fragments.SavedLocationsFragment">
 
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
 <!--    <androidx.recyclerview.widget.RecyclerView-->
 <!--        android:id="@+id/savedRecyclerView"-->
 <!--        android:layout_width="match_parent"-->
@@ -17,10 +21,9 @@
         android:id="@+id/btnTakePicture"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="end|bottom"
+        android:layout_gravity="bottom|right"
         android:clickable="true"
         android:layout_alignParentEnd="true"
-        android:gravity="end"
         android:src="@drawable/ic_cameraa"
         android:layout_margin="16dp"
         android:focusable="true" />
@@ -32,5 +35,5 @@
         android:layout_marginLeft="15dp"
         android:layout_marginTop="20dp"/>
 
-
+    </FrameLayout>
 </LinearLayout>
