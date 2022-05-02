@@ -15,4 +15,11 @@
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
     </style>
+
+
+<!--    <style name="Theme.ProxViewApp" parent ="Theme.AppCompat.Light.NoActionBar">-->
+<!--        <item name="android:windowBackground">@drawable/splash_screenbackground</item>-->
+<!--        <item name="android:windowNoTitle">true</item>-->
+<!--        <item name="android:windowFullscreen">true</item>-->
+<!--    </style>-->
 </resources>

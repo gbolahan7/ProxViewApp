@@ -3,10 +3,14 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/User/AndroidStudioProjects/ProxViewApp/app/src/main/res/drawable/bg_gradient.xml" value="0.1" />
         <entry key="..\:/Users/User/AndroidStudioProjects/ProxViewApp/app/src/main/res/drawable/home_background.xml" value="0.1" />
         <entry key="..\:/Users/User/AndroidStudioProjects/ProxViewApp/app/src/main/res/drawable/ic_bookmark.xml" value="0.1" />
         <entry key="..\:/Users/User/AndroidStudioProjects/ProxViewApp/app/src/main/res/drawable/ic_bookmarked.xml" value="0.1" />
         <entry key="..\:/Users/User/AndroidStudioProjects/ProxViewApp/app/src/main/res/drawable/ic_email.xml" value="0.1345" />
+        <entry key="..\:/Users/User/AndroidStudioProjects/ProxViewApp/app/src/main/res/drawable/ic_splash_background.xml" value="0.1" />
+        <entry key="..\:/Users/User/AndroidStudioProjects/ProxViewApp/app/src/main/res/drawable/splash_background.xml" value="0.1" />
+        <entry key="..\:/Users/User/AndroidStudioProjects/ProxViewApp/app/src/main/res/drawable/splash_view.xml" value="0.1" />
         <entry key="..\:/Users/User/AndroidStudioProjects/ProxViewApp/app/src/main/res/layout/about_layout.xml" value="0.20416666666666666" />
         <entry key="..\:/Users/User/AndroidStudioProjects/ProxViewApp/app/src/main/res/layout/activity_forget.xml" value="0.20416666666666666" />
         <entry key="..\:/Users/User/AndroidStudioProjects/ProxViewApp/app/src/main/res/layout/activity_login.xml" value="0.25" />

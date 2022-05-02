@@ -103,4 +103,7 @@ dependencies {
     // Library for drawing curves
     implementation 'io.github.florent37:shapeofview:1.4.7'
 
+    implementation 'com.airbnb.android:lottie:5.1.1'
+
+
 }

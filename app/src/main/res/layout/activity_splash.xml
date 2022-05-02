@@ -1,31 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/primaryColor"
-    tools:context=".Activity.SplashActivity">
-
-    <ImageView
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:scaleType="centerCrop"
-        android:alpha="0.58"
-        android:src="@drawable/splash_background"
-        android:contentDescription="TODO" />
+        android:background="@color/primaryColor"
+        tools:context=".Activity.SplashActivity">
+
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/anim1"
+        android:layout_width="300dp"
+        android:layout_height="300dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="60dp"
+        app:lottie_fileName="location.json"
+        app:lottie_autoPlay="true"
+        app:lottie_loop="true"/>
+
+    <TextView
+        android:id="@+id/titleText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/anim1"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:fontFamily="casual"
+        android:text="ProxView App"
+        android:textColor="@color/white"
+        android:textSize="40dp"
+        android:textStyle="bold" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="ProxView"
-        android:layout_centerInParent="true"
+        android:layout_below="@+id/titleText"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="225dp"
+        android:fontFamily="serif-monospace"
+        android:gravity="bottom"
+        android:text="Developed by Abass Durodola \u00A9 2022 "
         android:textColor="@color/white"
-        android:textSize="40dp"
-        android:textStyle="bold"/>
+        android:textSize="18dp"
+        android:textStyle="bold" />
 
 
 
 
 
-</RelativeLayout>
+    </RelativeLayout>
