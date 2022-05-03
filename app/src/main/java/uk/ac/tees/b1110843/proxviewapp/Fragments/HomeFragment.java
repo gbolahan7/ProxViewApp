@@ -78,7 +78,6 @@ import uk.ac.tees.b1110843.proxviewapp.WebServices.RetrofitAPI;
 import uk.ac.tees.b1110843.proxviewapp.WebServices.RetrofitClient;
 import uk.ac.tees.b1110843.proxviewapp.databinding.FragmentHomeBinding;
 
-//import android.location.LocationRequest;
 
 public class HomeFragment extends Fragment implements OnMapReadyCallback,  GoogleMap.OnMarkerClickListener, NearLocationInterface {
 
@@ -184,7 +183,6 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,  Googl
         }
 
         setUpRecyclerView();
-        getUserSavedLocations();
     }
 
     @Override
@@ -248,9 +246,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,  Googl
 
     private void setUpLocationUpdate() {
         LocationRequest locationRequest = LocationRequest.create();
-//        LocationSettingsRequest request=new LocationSettingsRequest.Builder()
-//                .addLocationRequest(LocationRequest.create())
-//                .build();
+
         locationRequest.setInterval(10000);
         locationRequest.setFastestInterval(5000);
         locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
@@ -306,9 +302,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,  Googl
             @Override
             public void onSuccess(Location location) {
                 currentLocation = location;
-//                infoWindowAdapter = null;
-//                infoWindowAdapter = new InfoWindowAdapter(currentLocation, requireContext());
-//                mGoogleMap.setInfoWindowAdapter(infoWindowAdapter);
+
                 moveCameraToLocation(location);
 
 
@@ -491,7 +485,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,  Googl
                     .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            removePlace(googlePlaceModel);
+
                         }
                     })
                     .setNegativeButton("No", new DialogInterface.OnClickListener() {
@@ -515,10 +509,8 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,  Googl
                                 googlePlaceModel.getGeometry().getLocation().getLat(),
                                 googlePlaceModel.getGeometry().getLocation().getLng());
 
-                        saveLocation(savedLocationModel);
                     }
 
-                    saveUserLocation(googlePlaceModel.getPlaceId());
 
                     int index = googlePlaceModelList.indexOf(googlePlaceModel);
                     googlePlaceModelList.get(index).setSaved(true);
@@ -535,73 +527,11 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,  Googl
         }
     }
 
-
-    private void removePlace(GooglePlaceModel googlePlaceModel) {
-
-        userSavedLocationId.remove(googlePlaceModel.getPlaceId());
-        int index = googlePlaceModelList.indexOf(googlePlaceModel);
-        googlePlaceModelList.get(index).setSaved(false);
-        googlePlaceAdapter.notifyDataSetChanged();
-
-        Snackbar.make(binding.getRoot(), "Location removed", Snackbar.LENGTH_LONG)
-                .setAction("Undo", new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        userSavedLocationId.add(googlePlaceModel.getPlaceId());
-                        googlePlaceModelList.get(index).setSaved(true);
-                        googlePlaceAdapter.notifyDataSetChanged();
-
-                    }
-                })
-                .addCallback(new BaseTransientBottomBar.BaseCallback<Snackbar>() {
-                    @Override
-                    public void onDismissed(Snackbar transientBottomBar, int event) {
-                        super.onDismissed(transientBottomBar, event);
-
-                        userLocationReference.setValue(userSavedLocationId);
-                    }
-                }).show();
-
-    }
-
-    private void saveUserLocation(String placeId) {
-        userSavedLocationId.add(placeId);
-        userLocationReference.setValue(userSavedLocationId);
-        Snackbar.make(binding.getRoot(), "Place Saved", Snackbar.LENGTH_LONG).show();
-        Log.d("mydebug", placeId );
-    }
-
-    private void saveLocation(SavedLocationModel savedLocationModel) {
-        locationReference.child(savedLocationModel.getPlaceId()).setValue(savedLocationModel);
-    }
-
     @Override
     public void onDirectionClick(GooglePlaceModel googlePlaceModel) {
         Toast.makeText(requireContext(), "Direction clicked", Toast.LENGTH_SHORT).show();
     }
 
-    private void getUserSavedLocations() {
-        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Users")
-                .child(firebaseAuth.getUid()).child("Saved Locations");
-
-        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if (snapshot.exists()) {
-                    for (DataSnapshot ds : snapshot.getChildren()) {
-                        String placeId = ds.getValue(String.class);
-                        userSavedLocationId.add(placeId);
-
-                    }
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
-    }
 
 
 }

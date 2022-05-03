@@ -46,11 +46,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private TextView textName, textEmail;
     private NavigationView navigationView;
 
-//    public MainActivity(ActivityMainBinding activityMainBinding, NavigationView navigationView) {
-//        this.activityMainBinding = activityMainBinding;
-//        this.navigationView = navigationView;
-//    }
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,9 +82,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         View headerLayout=navDrawerLayoutBinding.NavView.getHeaderView(0);
         textName=headerLayout.findViewById(R.id.HeaderName);
         textEmail=headerLayout.findViewById(R.id.HeaderEmail);
-
-//        NavigationView navigationView = findViewById(R.id.nav_view);
-//        navigationView.setNavigationItemSelectedListener(this);
 
         getUserData();
 
@@ -140,7 +132,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             }
         });
     }
-
 
 
 }

@@ -51,9 +51,6 @@ import uk.ac.tees.b1110843.proxviewapp.Constant.Constants;
 import uk.ac.tees.b1110843.proxviewapp.Permissions.AppPermissions;
 import uk.ac.tees.b1110843.proxviewapp.R;
 import uk.ac.tees.b1110843.proxviewapp.databinding.FragmentSettingsBinding;
-//import com.canhub.cropper.CropImage;
-//import com.canhub.cropper.CropImageActivity;
-
 
 public class SettingsFragment extends Fragment {
 
@@ -64,8 +61,7 @@ public class SettingsFragment extends Fragment {
     private Uri filePath;
     private ImageView imageView;
 
-
-
+    
     //progress dialog
     private ProgressDialog progressDialog;
     private Object NavDirections;
@@ -91,15 +87,6 @@ public class SettingsFragment extends Fragment {
         storageReference = storage.getReference();
         checkUser();
 
-//        binding.imgCamera.setOnClickListener(camera->{
-////            if(appPermissions.isStorageOk(getContext())){
-////                selectImage();
-////            }else {
-////                requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE
-////                        , Manifest.permission.WRITE_EXTERNAL_STORAGE}, Constants.STORAGE_REQUEST_CODE);
-////            }
-//
-//        });
 
         binding.imgCamera.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -138,8 +125,7 @@ public class SettingsFragment extends Fragment {
 
 
     private void selectImage() {
-//        CropImage.activity().setCropShape(CropImageView.CropShape.OVAL)
-//                .start(getContext(),this);
+
         // Defining Implicit Intent to mobile gallery
         Intent intent = new Intent();
         intent.setType("image/*");
@@ -152,11 +138,9 @@ public class SettingsFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-//        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("Settings");
+
         binding.EmailText.setText(firebaseAuth.getCurrentUser().getEmail());
         binding.usernameText.setText(firebaseAuth.getCurrentUser().getDisplayName());
-
-//        Glide.with(requireContext()).load(firebaseAuth.getCurrentUser().getPhotoUrl().into(binding.imgProfile));
 
 
     }
@@ -198,21 +182,6 @@ public class SettingsFragment extends Fragment {
             }
         }
     }
-
-//    @Override
-//    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-//        super.onActivityResult(requestCode, resultCode, data);
-//        if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
-//            CropImage.ActivityResult result = CropImage.getActivityResult(data);
-//            if (resultCode == Activity.RESULT_OK) {
-//                imageUri = result.getUri();
-//                uploadImage(imageUri);
-//            } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
-//                Exception exception = result.getError();
-//                Toast.makeText(getContext(), "" + exception.getMessage(), Toast.LENGTH_SHORT).show();
-//            }
-//        }
-//    }
 
     private void uploadImage(Uri imageUri) {
 
